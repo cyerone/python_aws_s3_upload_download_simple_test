@@ -76,7 +76,7 @@ def create_test_file(name, size_in_MB):
     test_file.close
     print("file: \"", name, "\" (", size_in_MB, "MB ) was created.")
 
-
+main()
 
 
 
