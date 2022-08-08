@@ -13,7 +13,7 @@ def main():
 
     create_test_file("10mb_testfile",10)
     create_test_file("100mb_testfile",100)
-    create_test_file("500mb_testfile",1000)
+    create_test_file("500mb_testfile",500)
 
     test_upload(50, encrypted_bucket_name, "10mb_testfile", "ue10_result.txt")
     test_upload(50, unencrypted_bucket_name, "10mb_testfile", "uu10_result.txt")
@@ -25,10 +25,10 @@ def main():
     test_download(50, encrypted_bucket_name, "100mb_testfile", "de100_result.txt")
     test_download(50, unencrypted_bucket_name, "100mb_testfile", "du100_result.txt")
 
-    test_upload(50, encrypted_bucket_name, "1000mb_testfile", "ue1000_result.txt")
-    test_upload(50, unencrypted_bucket_name, "1000mb_testfile", "uu1000_result.txt")
-    test_download(50, encrypted_bucket_name, "1000mb_testfile", "de1000_result.txt")
-    test_download(50, unencrypted_bucket_name, "1000mb_testfile", "du1000_result.txt")
+    test_upload(50, encrypted_bucket_name, "500mb_testfile", "ue500_result.txt")
+    test_upload(50, unencrypted_bucket_name, "500mb_testfile", "uu500_result.txt")
+    test_download(50, encrypted_bucket_name, "500mb_testfile", "de500_result.txt")
+    test_download(50, unencrypted_bucket_name, "500mb_testfile", "du500_result.txt")
 
     upload_results(results_list, results_bucket_name)
 
