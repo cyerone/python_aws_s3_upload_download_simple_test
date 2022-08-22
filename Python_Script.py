@@ -7,28 +7,22 @@ s3=boto3.resource('s3')
 results_list = []
 
 def main():
-    encrypted_bucket_name = sys.argv[1]
-    unencrypted_bucket_name = sys.argv[2]
-    results_bucket_name = sys.argv[3]
+    encrypted_sse_kms_bucket_name = sys.argv[1]
+    encrypted_sse_s3_bucket_name = sys.argv[2]
+    unencrypted_bucket_name = sys.argv[3]
+    results_bucket_name = sys.argv[4]
 
     create_test_file("10mb_testfile",10)
-    create_test_file("100mb_testfile",100)
-    create_test_file("500mb_testfile",500)
 
-    test_upload(50, encrypted_bucket_name, "10mb_testfile", "ue10_result.txt")
+
+    test_upload(50, encrypted_sse_kms_bucket_name, "10mb_testfile", "uek10_result.txt")
+    test_upload(50, encrypted_sse_s3_bucket_name, "10mb_testfile", "ues10_result.txt")
     test_upload(50, unencrypted_bucket_name, "10mb_testfile", "uu10_result.txt")
-    test_download(50, encrypted_bucket_name, "10mb_testfile", "de10_result.txt")
+    
+    test_download(50, encrypted_sse_kms_bucket_name, "10mb_testfile", "dek10_result.txt")
+    test_download(50, encrypted_sse_s3_bucket_name, "10mb_testfile", "des10_result.txt")
     test_download(50, unencrypted_bucket_name, "10mb_testfile", "du10_result.txt")
 
-    test_upload(50, encrypted_bucket_name, "100mb_testfile", "ue100_result.txt")
-    test_upload(50, unencrypted_bucket_name, "100mb_testfile", "uu100_result.txt")
-    test_download(50, encrypted_bucket_name, "100mb_testfile", "de100_result.txt")
-    test_download(50, unencrypted_bucket_name, "100mb_testfile", "du100_result.txt")
-
-    test_upload(50, encrypted_bucket_name, "500mb_testfile", "ue500_result.txt")
-    test_upload(50, unencrypted_bucket_name, "500mb_testfile", "uu500_result.txt")
-    test_download(50, encrypted_bucket_name, "500mb_testfile", "de500_result.txt")
-    test_download(50, unencrypted_bucket_name, "500mb_testfile", "du500_result.txt")
 
     upload_results(results_list, results_bucket_name)
 
@@ -77,8 +71,3 @@ def create_test_file(name, size_in_MB):
     print("file: \"", name, "\" (", size_in_MB, "MB ) was created.")
 
 main()
-
-
-
-
-
