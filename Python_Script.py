@@ -4,29 +4,45 @@ import os
 import sys 
 
 s3=boto3.resource('s3')
-results_list = []
 
 def main():
+    results_list = []
     encrypted_sse_kms_bucket_name = sys.argv[1]
     encrypted_sse_s3_bucket_name = sys.argv[2]
     unencrypted_bucket_name = sys.argv[3]
     results_bucket_name = sys.argv[4]
 
     create_test_file("10mb_testfile",10)
-
-
-    test_upload(50, encrypted_sse_kms_bucket_name, "10mb_testfile", "uek10_result.txt")
-    test_upload(50, encrypted_sse_s3_bucket_name, "10mb_testfile", "ues10_result.txt")
-    test_upload(50, unencrypted_bucket_name, "10mb_testfile", "uu10_result.txt")
-    
-    test_download(50, encrypted_sse_kms_bucket_name, "10mb_testfile", "dek10_result.txt")
-    test_download(50, encrypted_sse_s3_bucket_name, "10mb_testfile", "des10_result.txt")
-    test_download(50, unencrypted_bucket_name, "10mb_testfile", "du10_result.txt")
-
-
+    test_upload(100, encrypted_sse_kms_bucket_name, "10mb_testfile", "uek10_result.txt", results_list)
+    test_upload(100, encrypted_sse_s3_bucket_name, "10mb_testfile", "ues10_result.txt", results_list)
+    test_upload(100, unencrypted_bucket_name, "10mb_testfile", "uu10_result.txt", results_list)
+    test_download(100, encrypted_sse_kms_bucket_name, "10mb_testfile", "dek10_result.txt", results_list)
+    test_download(100, encrypted_sse_s3_bucket_name, "10mb_testfile", "des10_result.txt", results_list)
+    test_download(100, unencrypted_bucket_name, "10mb_testfile", "du10_result.txt", results_list)
     upload_results(results_list, results_bucket_name)
+    results_list = []
 
-    
+    create_test_file("50mb_testfile",50)
+    test_upload(100, encrypted_sse_kms_bucket_name, "50mb_testfile", "uek50_result.txt", results_list)
+    test_upload(100, encrypted_sse_s3_bucket_name, "50mb_testfile", "ues50_result.txt", results_list)
+    test_upload(100, unencrypted_bucket_name, "50mb_testfile", "uu50_result.txt", results_list)
+    test_download(100, encrypted_sse_kms_bucket_name, "50mb_testfile", "dek50_result.txt", results_list)
+    test_download(100, encrypted_sse_s3_bucket_name, "50mb_testfile", "des50_result.txt", results_list)
+    test_download(100, unencrypted_bucket_name, "50mb_testfile", "du50_result.txt", results_list)
+    upload_results(results_list, results_bucket_name)
+    results_list = []
+
+    create_test_file("100mb_testfile",100)
+    test_upload(100, encrypted_sse_kms_bucket_name, "100mb_testfile", "uek100_result.txt", results_list)
+    test_upload(100, encrypted_sse_s3_bucket_name, "100mb_testfile", "ues100_result.txt", results_list)
+    test_upload(100, unencrypted_bucket_name, "100mb_testfile", "uu100_result.txt", results_list)
+    test_download(100, encrypted_sse_kms_bucket_name, "100mb_testfile", "dek100_result.txt", results_list)
+    test_download(100, encrypted_sse_s3_bucket_name, "100mb_testfile", "des100_result.txt", results_list)
+    test_download(100, unencrypted_bucket_name, "100mb_testfile", "du100_result.txt", results_list)
+    upload_results(results_list, results_bucket_name)
+    results_list = []
+
+
 
 def upload_to_bucket(file, bucket):
     s3.meta.client.upload_file(file,bucket,file)
@@ -34,7 +50,7 @@ def upload_to_bucket(file, bucket):
 def download_from_bucket(file,bucket):
     s3.Bucket(bucket).download_file(file,file)
 
-def test_upload(count, bucket, file, output):
+def test_upload(count, bucket, file, output, results_list):
     output_file = open(output, "w")
     for x in range(count):
         start_time = time.time()
@@ -47,7 +63,7 @@ def test_upload(count, bucket, file, output):
     output_file.close()
     results_list.append(output)
 
-def test_download(count, bucket, file, output):
+def test_download(count, bucket, file, output, results_list):
     output_file = open(output, "w")
     for x in range(count):
         start_time = time.time()
